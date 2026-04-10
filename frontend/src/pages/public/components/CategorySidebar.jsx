@@ -4,7 +4,21 @@ import { ChevronRight } from "lucide-react";
 
 const PRIMARY_COLOR = "#61C5C3";
 
-const categoriesData = [
+export const categoriesData = [
+  {
+    id: "computer-science",
+    name: "Computer Science",
+    icon: "💻",
+    datasetCount: 7,
+    subcategories: [
+      { id: "data-science", name: "Data Science", datasetCount: 3 },
+      { id: "ai", name: "Artificial Intelligence", datasetCount: 1 },
+      { id: "cybersecurity", name: "Cybersecurity", datasetCount: 1 },
+      { id: "ml", name: "Machine Learning", datasetCount: 1 },
+      { id: "cv", name: "Computer Vision", datasetCount: 1 },
+      { id: "nlp", name: "NLP", datasetCount: 1 },
+    ],
+  },
   {
     id: "agriculture",
     name: "Agriculture and Environment",
@@ -58,9 +72,36 @@ const categoriesData = [
     ],
   },
   {
+    id: "economics",
+    name: "Economics",
+    icon: "📊",
+    datasetCount: 1,
+    subcategories: [
+      { id: "energy-econ", name: "Energy Economics", datasetCount: 1 },
+    ],
+  },
+  {
+    id: "entertainment",
+    name: "Entertainment",
+    icon: "🎬",
+    datasetCount: 1,
+    subcategories: [
+      { id: "music", name: "Music Analytics", datasetCount: 1 },
+    ],
+  },
+  {
+    id: "healthcare",
+    name: "Healthcare",
+    icon: "⚕️",
+    datasetCount: 1,
+    subcategories: [
+      { id: "medical-ai", name: "Medical AI", datasetCount: 1 },
+    ],
+  },
+  {
     id: "ict",
     name: "ICT and Digital Economy",
-    icon: "💻",
+    icon: "🖥️",
     datasetCount: 16,
     subcategories: [
       { id: "ict-telecom", name: "ICT / Telecommunications", datasetCount: 8 },
