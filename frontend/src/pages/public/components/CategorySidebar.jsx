@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 
 const PRIMARY_COLOR = "#61C5C3";
 
-const categoriesData = [
+export const categoriesData = [
   {
     id: "computer-science",
     name: "Computer Science",

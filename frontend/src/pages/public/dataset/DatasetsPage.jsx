@@ -30,7 +30,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import PageLayout from "../components/PageLayout";
-import CategorySidebar from "../components/CategorySidebar";
+import CategorySidebar, { categoriesData } from "../components/CategorySidebar";
 import FiltersPanel from "../components/FiltersPanel";
 
 const PRIMARY_COLOR = "#61C5C3";
@@ -427,60 +427,83 @@ export default function DatasetsPage() {
             position: "relative",
           }}
         >
-          {/* Search Bar */}
-          <Box sx={{ mb: 4, position: "relative" }}>
-            <TextField
-              fullWidth
-              placeholder="Search 21,149 datasets"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-              variant="outlined"
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
-                  height: 50,
-                  fontSize: "0.95rem",
-                },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search size={20} color="#111827" />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Box
-                      onClick={() => setIsFiltersPanelOpen(true)}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        fontWeight: 600,
-                        color: PRIMARY_COLOR,
-                        cursor: "pointer",
-                        transition: "opacity 0.2s",
-                        "&:hover": {
-                          opacity: 0.8,
-                        },
-                      }}
-                    >
-                      <SlidersHorizontal size={18} />
-                      <Typography
-                        fontWeight={600}
-                        sx={{ fontSize: "0.9rem", color: PRIMARY_COLOR }}
-                      >
-                        Filters
-                      </Typography>
-                    </Box>
-                  </InputAdornment>
-                ),
-              }}
-            />
+          {/* Search Bar with Dynamic Placeholder */}
+          <Box sx={{ mb: 3, position: "relative" }}>
+            {(() => {
+              let placeholderText = "Search datasets";
+              let datasetCount = trendingDatasets.length;
+
+              if (selectedCategory?.selectedSubcategory) {
+                const filtered = trendingDatasets.filter(
+                  (d) =>
+                    d.category === selectedCategory.name &&
+                    d.subcategory === selectedCategory.selectedSubcategory.name
+                );
+                datasetCount = filtered.length;
+                placeholderText = `Search ${datasetCount} dataset${datasetCount !== 1 ? "s" : ""}`;
+              } else if (selectedCategory) {
+                const filtered = trendingDatasets.filter(
+                  (d) => d.category === selectedCategory.name
+                );
+                datasetCount = filtered.length;
+                placeholderText = `Search ${datasetCount} dataset${datasetCount !== 1 ? "s" : ""}`;
+              }
+
+              return (
+                <TextField
+                  fullWidth
+                  placeholder={placeholderText}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: "#fff",
+                    borderRadius: "10px",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "10px",
+                      height: 50,
+                      fontSize: "0.95rem",
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search size={20} color="#111827" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Box
+                          onClick={() => setIsFiltersPanelOpen(true)}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            fontWeight: 600,
+                            color: PRIMARY_COLOR,
+                            cursor: "pointer",
+                            transition: "opacity 0.2s",
+                            "&:hover": {
+                              opacity: 0.8,
+                            },
+                          }}
+                        >
+                          <SlidersHorizontal size={18} />
+                          <Typography
+                            fontWeight={600}
+                            sx={{ fontSize: "0.9rem", color: PRIMARY_COLOR }}
+                          >
+                            Filters
+                          </Typography>
+                        </Box>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            })()}
 
             {/* Search Dropdown */}
             {isSearchFocused && (
@@ -652,6 +675,80 @@ export default function DatasetsPage() {
             )}
           </Box>
 
+          {/* Quick Category Filter Chips */}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              flexWrap: "wrap",
+              mb: 4,
+              alignItems: "center",
+            }}
+          >
+            <Chip
+              label="All datasets"
+              onClick={() => setSelectedCategory(null)}
+              variant={!selectedCategory ? "filled" : "outlined"}
+              sx={{
+                borderRadius: "6px",
+                fontSize: "0.85rem",
+                height: 32,
+                px: 1.5,
+                backgroundColor: !selectedCategory ? PRIMARY_COLOR : "#fff",
+                color: !selectedCategory ? "#fff" : "#374151",
+                borderColor: "#d1d5db",
+                fontWeight: 500,
+                "&:hover": {
+                  backgroundColor: !selectedCategory ? PRIMARY_COLOR : "#f0fffe",
+                },
+              }}
+            />
+
+            {categoriesData.map((category) => (
+              <Chip
+                key={category.id}
+                label={category.name}
+                onClick={() => {
+                  setSelectedCategory({
+                    ...category,
+                    selectedSubcategory: null,
+                  });
+                }}
+                variant={
+                  selectedCategory?.id === category.id &&
+                  !selectedCategory?.selectedSubcategory
+                    ? "filled"
+                    : "outlined"
+                }
+                sx={{
+                  borderRadius: "6px",
+                  fontSize: "0.85rem",
+                  height: 32,
+                  px: 1.5,
+                  backgroundColor:
+                    selectedCategory?.id === category.id &&
+                    !selectedCategory?.selectedSubcategory
+                      ? PRIMARY_COLOR
+                      : "#fff",
+                  color:
+                    selectedCategory?.id === category.id &&
+                    !selectedCategory?.selectedSubcategory
+                      ? "#fff"
+                      : "#374151",
+                  borderColor: "#d1d5db",
+                  fontWeight: 500,
+                  "&:hover": {
+                    backgroundColor:
+                      selectedCategory?.id === category.id &&
+                      !selectedCategory?.selectedSubcategory
+                        ? PRIMARY_COLOR
+                        : "#f0fffe",
+                  },
+                }}
+              />
+            ))}
+          </Box>
+
           {/* Main Content Grid */}
           <Box
             sx={{
@@ -672,7 +769,7 @@ export default function DatasetsPage() {
 
             {/* Main Content */}
             <Box>
-              {/* Header with Controls */}
+              {/* Header with Controls - Only show controls if subcategory selected */}
               <Box
                 sx={{
                   display: "flex",
@@ -684,7 +781,7 @@ export default function DatasetsPage() {
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
-                  <Box sx={{ fontSize: "1.3rem" }}>📊</Box>
+                  <Box sx={{ fontSize: "1.3rem" }}>🔥</Box>
                   <Typography
                     sx={{
                       fontSize: "1.1rem",
@@ -692,109 +789,113 @@ export default function DatasetsPage() {
                       color: "#111827",
                     }}
                   >
-                    {filteredDatasets.length.toLocaleString()} Datasets
+                    Trending Datasets
                   </Typography>
                 </Box>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  {/* Sorting Dropdown */}
-                  <Select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      px: 1.5,
-                      py: 0.8,
-                      backgroundColor: "#f9fafb",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      border: "1px solid #e5e7eb",
-                      fontSize: "0.9rem",
-                      fontWeight: 600,
-                      color: "#111827",
-                      transition: "all 0.2s",
-                      minWidth: "120px",
-                      height: 40,
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                      },
-                      "&:hover": {
-                        backgroundColor: "#f3f4f6",
-                      },
-                      "&.Mui-focused": {
-                        backgroundColor: "#f3f4f6",
-                        outline: "none",
-                      },
-                      "& .MuiSvgIcon-root": {
-                        color: "#6b7280",
-                      },
-                    }}
-                  >
-                    {sortOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                {/* Controls only show when a subcategory is selected */}
+                {selectedCategory?.selectedSubcategory && (
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    {/* Sorting Dropdown */}
+                    <Select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        px: 1.5,
+                        py: 0.8,
+                        backgroundColor: "#f9fafb",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        border: "1px solid #e5e7eb",
+                        fontSize: "0.9rem",
+                        fontWeight: 600,
+                        color: "#111827",
+                        transition: "all 0.2s",
+                        minWidth: "120px",
+                        height: 40,
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                        "&:hover": {
+                          backgroundColor: "#f3f4f6",
+                        },
+                        "&.Mui-focused": {
+                          backgroundColor: "#f3f4f6",
+                          outline: "none",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: "#6b7280",
+                        },
+                      }}
+                    >
+                      {sortOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
 
-                  {/* View Toggle */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 0.5,
-                      backgroundColor: "#f9fafb",
-                      borderRadius: "8px",
-                      padding: "4px",
-                      border: "1px solid #e5e7eb",
-                    }}
-                  >
+                    {/* View Toggle */}
                     <Box
-                      onClick={() => setViewType("grid")}
                       sx={{
-                        p: 0.8,
-                        borderRadius: "6px",
-                        backgroundColor: viewType === "grid" ? "#fff" : "transparent",
-                        border: viewType === "grid" ? "1px solid #e5e7eb" : "none",
-                        cursor: "pointer",
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "all 0.2s",
-                        "&:hover": {
-                          backgroundColor: "#f3f4f6",
-                        },
+                        gap: 0.5,
+                        backgroundColor: "#f9fafb",
+                        borderRadius: "8px",
+                        padding: "4px",
+                        border: "1px solid #e5e7eb",
                       }}
-                      title="Grid View"
                     >
-                      <Grid3x3 size={18} color={viewType === "grid" ? PRIMARY_COLOR : "#6b7280"} />
-                    </Box>
-                    <Box
-                      onClick={() => setViewType("list")}
-                      sx={{
-                        p: 0.8,
-                        borderRadius: "6px",
-                        backgroundColor: viewType === "list" ? "#fff" : "transparent",
-                        border: viewType === "list" ? "1px solid #e5e7eb" : "none",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "all 0.2s",
-                        "&:hover": {
-                          backgroundColor: "#f3f4f6",
-                        },
-                      }}
-                      title="List View"
-                    >
-                      <List size={18} color={viewType === "list" ? PRIMARY_COLOR : "#6b7280"} />
+                      <Box
+                        onClick={() => setViewType("grid")}
+                        sx={{
+                          p: 0.8,
+                          borderRadius: "6px",
+                          backgroundColor: viewType === "grid" ? "#fff" : "transparent",
+                          border: viewType === "grid" ? "1px solid #e5e7eb" : "none",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition: "all 0.2s",
+                          "&:hover": {
+                            backgroundColor: "#f3f4f6",
+                          },
+                        }}
+                        title="Grid View"
+                      >
+                        <Grid3x3 size={18} color={viewType === "grid" ? PRIMARY_COLOR : "#6b7280"} />
+                      </Box>
+                      <Box
+                        onClick={() => setViewType("list")}
+                        sx={{
+                          p: 0.8,
+                          borderRadius: "6px",
+                          backgroundColor: viewType === "list" ? "#fff" : "transparent",
+                          border: viewType === "list" ? "1px solid #e5e7eb" : "none",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition: "all 0.2s",
+                          "&:hover": {
+                            backgroundColor: "#f3f4f6",
+                          },
+                        }}
+                        title="List View"
+                      >
+                        <List size={18} color={viewType === "list" ? PRIMARY_COLOR : "#6b7280"} />
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
+                )}
               </Box>
 
-              {/* Category Chips Row */}
+              {/* Category Chips Row - Only show if category/subcategory selected */}
+              {selectedCategory && (
               <Box
                 sx={{
                   display: "flex",
@@ -933,6 +1034,7 @@ export default function DatasetsPage() {
                     />
                   ))}
               </Box>
+              )}
 
               {/* Datasets Grid/List */}
               <Box
