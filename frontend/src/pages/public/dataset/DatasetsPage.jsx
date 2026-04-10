@@ -26,12 +26,24 @@ import {
 } from "lucide-react";
 import PageLayout from "../components/PageLayout";
 import CategorySidebar from "../components/CategorySidebar";
+import FiltersPanel from "../components/FiltersPanel";
 
 const PRIMARY_COLOR = "#61C5C3";
 
 export default function DatasetsPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isFiltersPanelOpen, setIsFiltersPanelOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    tagSearch: "",
+    minSize: "",
+    maxSize: "",
+    fileTypes: [],
+    licenses: [],
+    usabilityRatings: [],
+    votedFor: [],
+  });
+  const [appliedFilters, setAppliedFilters] = useState({ ...filters });
 
   const trendingDatasets = [
     {
@@ -104,6 +116,25 @@ export default function DatasetsPage() {
     },
   ];
 
+  const handleApplyFilters = () => {
+    setAppliedFilters({ ...filters });
+    setIsFiltersPanelOpen(false);
+  };
+
+  const handleClearFilters = () => {
+    const clearedFilters = {
+      tagSearch: "",
+      minSize: "",
+      maxSize: "",
+      fileTypes: [],
+      licenses: [],
+      usabilityRatings: [],
+      votedFor: [],
+    };
+    setFilters(clearedFilters);
+    setAppliedFilters(clearedFilters);
+  };
+
   const filteredDatasets = trendingDatasets.filter((dataset) => {
     const matchesSearch =
       dataset.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -173,6 +204,7 @@ export default function DatasetsPage() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <Box
+                      onClick={() => setIsFiltersPanelOpen(true)}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -180,6 +212,10 @@ export default function DatasetsPage() {
                         fontWeight: 600,
                         color: PRIMARY_COLOR,
                         cursor: "pointer",
+                        transition: "opacity 0.2s",
+                        "&:hover": {
+                          opacity: 0.8,
+                        },
                       }}
                     >
                       <SlidersHorizontal size={18} />
@@ -430,6 +466,16 @@ export default function DatasetsPage() {
           </Box>
         </Container>
       </Box>
+
+      {/* Filters Panel */}
+      <FiltersPanel
+        isOpen={isFiltersPanelOpen}
+        onClose={() => setIsFiltersPanelOpen(false)}
+        filters={filters}
+        onFiltersChange={setFilters}
+        onApply={handleApplyFilters}
+        onClear={handleClearFilters}
+      />
     </PageLayout>
   );
 }
