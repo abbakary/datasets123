@@ -11,6 +11,8 @@ import {
   IconButton,
   InputAdornment,
   Chip,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import {
   Search,
@@ -52,27 +54,45 @@ export default function DatasetsPage() {
   const [appliedFilters, setAppliedFilters] = useState({ ...filters });
 
   const recentQueries = [
-    "Cosmetics & Skincare Product Sales Data (2022)",
-    "fleet management",
-    "cars damage images",
+    "Social Media Impact on Teen Mental Health",
+    "How AI is Changing Student Life",
+    "E-Commerce Behavior Analysis",
+    "Machine Learning Models",
+    "Data Science Trends 2024",
   ];
 
   const recentlyViewed = [
     {
-      title: "Car Specifications Dataset",
-      subtitle: "A Comprehensive Dataset for Vehicle Price Prediction and Machine Learning Analysis",
+      title: "Social Media Impact on Teen Mental Health",
+      subtitle: "Analysis of social media effects on adolescent mental wellbeing and psychological health outcomes",
       image: "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=100&q=80",
     },
     {
-      title: "Cosmetics & Skincare Product Sales Data (2022)",
-      subtitle: "A global transactional dataset simulating real-world sales of cosmetic, skincare...",
+      title: "How AI is Changing Student Life",
+      subtitle: "Comprehensive study on AI adoption in educational institutions and student learning patterns",
       image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=100&q=80",
     },
+    {
+      title: "E-Commerce Behavior Dataset",
+      subtitle: "Consumer behavior analysis and purchasing patterns in online retail environments",
+      image: "https://images.unsplash.com/photo-1460925895917-adf4e5d1baaa?auto=format&fit=crop&w=100&q=80",
+    },
+  ];
+
+  const relatedTags = [
+    "machine learning",
+    "neural networks",
+    "data analysis",
+    "computer vision",
+    "NLP",
+    "deep learning",
+    "artificial intelligence",
+    "predictive modeling"
   ];
 
   const sortOptions = [
     { value: "hotness", label: "Hotness" },
-    { value: "most-voted", label: "Most Voted" },
+    { value: "most-voted", label: "Most Votes" },
     { value: "new", label: "New" },
     { value: "updated", label: "Updated" },
     { value: "usability", label: "Usability" },
@@ -83,14 +103,17 @@ export default function DatasetsPage() {
   const trendingDatasets = [
     {
       id: 1,
-      title: "Liver Cirrhosis Disease Prediction Dataset",
-      author: "zkskhurram",
+      title: "Social Media Impact on Teen Mental Health",
+      author: "Muhammad Shahzad",
+      category: "Computer Science",
+      subcategory: "Data Science",
       usability: "10.0",
-      updated: "Updated a day ago",
-      files: "2 Files (CSV)",
-      size: "10 kB",
-      downloads: "92 downloads",
-      votes: 13,
+      updated: "Updated 5 days ago",
+      files: "1 File (CSV)",
+      size: "16 kB",
+      downloads: "1,035 downloads",
+      votes: 38,
+      notebooks: 4,
       image:
         "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
       avatars: [
@@ -100,14 +123,17 @@ export default function DatasetsPage() {
     },
     {
       id: 2,
-      title: "Python OSV Vulnerabilities & CVSS Features",
-      author: "Kanchana1990",
+      title: "How AI is Changing Student Life",
+      author: "Tanzeela Aftab",
+      category: "Computer Science",
+      subcategory: "Artificial Intelligence",
       usability: "10.0",
-      updated: "Updated 14 hours ago",
-      files: "3 Files (CSV)",
-      size: "3 MB",
-      downloads: "32 downloads",
-      votes: 10,
+      updated: "Updated 14 days ago",
+      files: "1 File (CSV)",
+      size: "2 kB",
+      downloads: "1,464 downloads",
+      votes: 43,
+      notebooks: 13,
       image:
         "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80",
       avatars: [
@@ -117,14 +143,17 @@ export default function DatasetsPage() {
     },
     {
       id: 3,
-      title: "Spotify Global Hits and Artist Analytics",
-      author: "Eman Fatima",
+      title: "E-Commerce Behavior Pattern Analysis",
+      author: "Asif Zaman",
+      category: "Computer Science",
+      subcategory: "Data Science",
       usability: "10.0",
-      updated: "Updated 7 days ago",
+      updated: "Updated 10 days ago",
       files: "3 Files (CSV)",
-      size: "9 kB",
-      downloads: "418 downloads",
-      votes: 16,
+      size: "151 kB",
+      downloads: "1,621 downloads",
+      votes: 49,
+      notebooks: 6,
       image:
         "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=900&q=80",
       avatars: [
@@ -134,19 +163,182 @@ export default function DatasetsPage() {
     },
     {
       id: 4,
-      title: "Student Mental Health and Burnout Dataset",
-      author: "Mansehaj Preet",
-      usability: "10.0",
-      updated: "Updated 23 days ago",
-      files: "1 File (CSV)",
-      size: "3 MB",
-      downloads: "742 downloads",
-      votes: 16,
+      title: "World vs Asia Fuel Prices Comparison",
+      author: "Ahmed Khan",
+      category: "Economics",
+      subcategory: "Energy Economics",
+      usability: "9.8",
+      updated: "Updated 8 days ago",
+      files: "2 Files (CSV)",
+      size: "2.3 MB",
+      downloads: "892 downloads",
+      votes: 35,
+      notebooks: 8,
       image:
         "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
       avatars: [
         "https://i.pravatar.cc/40?img=41",
         "https://i.pravatar.cc/40?img=43",
+      ],
+    },
+    {
+      id: 5,
+      title: "Python OSV Vulnerabilities & CVSS Features",
+      author: "Kanchana1990",
+      category: "Computer Science",
+      subcategory: "Cybersecurity",
+      usability: "10.0",
+      updated: "Updated 2 days ago",
+      files: "3 Files (CSV)",
+      size: "3 MB",
+      downloads: "2,156 downloads",
+      votes: 52,
+      notebooks: 9,
+      image:
+        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=51",
+        "https://i.pravatar.cc/40?img=53",
+      ],
+    },
+    {
+      id: 6,
+      title: "Spotify Global Hits and Artist Analytics",
+      author: "Eman Fatima",
+      category: "Entertainment",
+      subcategory: "Music Analytics",
+      usability: "9.5",
+      updated: "Updated 12 days ago",
+      files: "3 Files (CSV)",
+      size: "9 kB",
+      downloads: "418 downloads",
+      votes: 28,
+      notebooks: 5,
+      image:
+        "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=61",
+        "https://i.pravatar.cc/40?img=63",
+      ],
+    },
+    {
+      id: 7,
+      title: "Student Mental Health and Burnout Dataset",
+      author: "Mansehaj Preet",
+      category: "Computer Science",
+      subcategory: "Data Science",
+      usability: "10.0",
+      updated: "Updated 20 days ago",
+      files: "1 File (CSV)",
+      size: "3 MB",
+      downloads: "742 downloads",
+      votes: 41,
+      notebooks: 7,
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=71",
+        "https://i.pravatar.cc/40?img=73",
+      ],
+    },
+    {
+      id: 8,
+      title: "Deep Learning Model Architectures",
+      author: "Dr. Sarah Chen",
+      category: "Computer Science",
+      subcategory: "Machine Learning",
+      usability: "9.9",
+      updated: "Updated 3 days ago",
+      files: "5 Files (TensorFlow, PyTorch)",
+      size: "45 MB",
+      downloads: "3,214 downloads",
+      votes: 67,
+      notebooks: 12,
+      image:
+        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=81",
+        "https://i.pravatar.cc/40?img=83",
+      ],
+    },
+    {
+      id: 9,
+      title: "Computer Vision Object Detection Dataset",
+      author: "Alex Rodriguez",
+      category: "Computer Science",
+      subcategory: "Computer Vision",
+      usability: "9.7",
+      updated: "Updated 6 days ago",
+      files: "10 Files (Images, Annotations)",
+      size: "2.1 GB",
+      downloads: "892 downloads",
+      votes: 45,
+      notebooks: 8,
+      image:
+        "https://images.unsplash.com/photo-1516110833967-0b5442fabffd?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=91",
+        "https://i.pravatar.cc/40?img=93",
+      ],
+    },
+    {
+      id: 10,
+      title: "Natural Language Processing Text Classification",
+      author: "Emma Thompson",
+      category: "Computer Science",
+      subcategory: "NLP",
+      usability: "9.8",
+      updated: "Updated 4 days ago",
+      files: "2 Files (CSV, JSON)",
+      size: "156 MB",
+      downloads: "1,543 downloads",
+      votes: 54,
+      notebooks: 10,
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=101",
+        "https://i.pravatar.cc/40?img=103",
+      ],
+    },
+    {
+      id: 11,
+      title: "Liver Cirrhosis Disease Prediction Dataset",
+      author: "Dr. Michael Hassan",
+      category: "Healthcare",
+      subcategory: "Medical AI",
+      usability: "10.0",
+      updated: "Updated 1 day ago",
+      files: "2 Files (CSV)",
+      size: "10 kB",
+      downloads: "92 downloads",
+      votes: 31,
+      notebooks: 4,
+      image:
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=111",
+        "https://i.pravatar.cc/40?img=113",
+      ],
+    },
+    {
+      id: 12,
+      title: "Neural Network Architecture Optimization",
+      author: "Robert Chen",
+      category: "Computer Science",
+      subcategory: "Machine Learning",
+      usability: "9.6",
+      updated: "Updated 11 days ago",
+      files: "4 Files (Python, Notebooks)",
+      size: "78 MB",
+      downloads: "2,341 downloads",
+      votes: 58,
+      notebooks: 11,
+      image:
+        "https://images.unsplash.com/photo-1505228395891-9a51e7e86e81?auto=format&fit=crop&w=900&q=80",
+      avatars: [
+        "https://i.pravatar.cc/40?img=121",
+        "https://i.pravatar.cc/40?img=123",
       ],
     },
   ];
@@ -183,26 +375,26 @@ export default function DatasetsPage() {
         return true;
       }
 
-      // If a specific subcategory is selected
+      // If a specific subcategory is selected, match by subcategory
       if (selectedCategory.selectedSubcategory) {
         return (
-          dataset.title.toLowerCase().includes(selectedCategory.selectedSubcategory.name.toLowerCase()) ||
-          dataset.title.toLowerCase().includes(selectedCategory.name.toLowerCase())
+          dataset.category === selectedCategory.name &&
+          dataset.subcategory === selectedCategory.selectedSubcategory.name
         );
       }
 
-      // If only main category is selected
-      return (
-        dataset.title.toLowerCase().includes(selectedCategory.name.toLowerCase()) ||
-        dataset.author.toLowerCase().includes(selectedCategory.name.toLowerCase())
-      );
+      // If only main category is selected, match by category
+      return dataset.category === selectedCategory.name;
     })
     .sort((a, b) => {
       switch (sortBy) {
         case "most-voted":
           return b.votes - a.votes;
-        case "most-downloaded":
-          return parseInt(b.downloads) - parseInt(a.downloads);
+        case "most-downloaded": {
+          const aDownloads = parseInt(a.downloads.replace(/,/g, ""));
+          const bDownloads = parseInt(b.downloads.replace(/,/g, ""));
+          return bDownloads - aDownloads;
+        }
         case "usability":
           return parseFloat(b.usability) - parseFloat(a.usability);
         case "new":
@@ -210,10 +402,12 @@ export default function DatasetsPage() {
         case "updated":
           return a.id - b.id;
         case "most-notebooks":
-          return 0; // Placeholder
+          return (b.notebooks || 0) - (a.notebooks || 0);
         case "hotness":
         default:
-          return b.votes * parseFloat(b.usability) - a.votes * parseFloat(a.usability);
+          const heatA = a.votes * parseFloat(a.usability);
+          const heatB = b.votes * parseFloat(b.usability);
+          return heatB - heatA;
       }
     });
 
@@ -432,7 +626,7 @@ export default function DatasetsPage() {
                     Related Tags
                   </Typography>
                   <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                    {["machine learning", "price prediction", "vehicle data", "analysis"].map(
+                    {relatedTags.map(
                       (tag) => (
                         <Chip
                           key={tag}
@@ -446,6 +640,7 @@ export default function DatasetsPage() {
                             height: 28,
                             "&:hover": {
                               backgroundColor: "#e5e7eb",
+                              cursor: "pointer",
                             },
                           }}
                         />
@@ -503,7 +698,9 @@ export default function DatasetsPage() {
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   {/* Sorting Dropdown */}
-                  <Box
+                  <Select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -514,44 +711,33 @@ export default function DatasetsPage() {
                       borderRadius: "8px",
                       cursor: "pointer",
                       border: "1px solid #e5e7eb",
-                      transition: "all 0.2s",
-                      position: "relative",
-                      "&:hover": {
-                        backgroundColor: "#f3f4f6",
-                      },
-                    }}
-                    component="select"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    onMouseDown={(e) => e.preventDefault()}
-                    sx={{
-                      appearance: "none",
-                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e")`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "right 0.75rem center",
-                      backgroundSize: "16px 12px",
-                      paddingRight: "2.5rem",
-                      cursor: "pointer",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                      px: 1.5,
-                      py: 0.8,
                       fontSize: "0.9rem",
                       fontWeight: 600,
                       color: "#111827",
-                      backgroundColor: "#f9fafb",
                       transition: "all 0.2s",
+                      minWidth: "120px",
+                      height: 40,
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                      },
                       "&:hover": {
                         backgroundColor: "#f3f4f6",
+                      },
+                      "&.Mui-focused": {
+                        backgroundColor: "#f3f4f6",
+                        outline: "none",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        color: "#6b7280",
                       },
                     }}
                   >
                     {sortOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value}>
                         {option.label}
-                      </option>
+                      </MenuItem>
                     ))}
-                  </Box>
+                  </Select>
 
                   {/* View Toggle */}
                   <Box
