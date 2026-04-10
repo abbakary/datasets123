@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Typography, Paper, Badge } from "@mui/material";
+import { ChevronRight } from "lucide-react";
 
 const PRIMARY_COLOR = "#61C5C3";
 
@@ -184,25 +185,14 @@ export default function CategorySidebar({ onCategorySelect, selectedCategory }) 
           sx={{
             maxHeight: "calc(100vh - 300px)",
             overflowY: "auto",
-            overflowX: "visible",
-            pr: 0.5,
-            // Hide scrollbar but keep scrolling functionality
+            overflowX: "hidden",
+            // Hide scrollbar completely but keep scrolling functionality
             "&::-webkit-scrollbar": {
-              width: "6px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "transparent",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#d1d5db",
-              borderRadius: "3px",
-              "&:hover": {
-                background: "#9ca3af",
-              },
+              display: "none",
             },
             // Firefox
-            scrollbarWidth: "thin",
-            scrollbarColor: "#d1d5db transparent",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
           {categoriesData.map((category) => {
@@ -266,6 +256,16 @@ export default function CategorySidebar({ onCategorySelect, selectedCategory }) 
                       {category.datasetCount} datasets
                     </Typography>
                   </Box>
+
+                  {/* Chevron indicator */}
+                  <ChevronRight
+                    size={20}
+                    style={{
+                      color: isSelected ? PRIMARY_COLOR : "#9ca3af",
+                      flexShrink: 0,
+                      transition: "color 0.2s ease",
+                    }}
+                  />
                 </Box>
 
                 {/* Hover Submenu - Shows on hover */}
