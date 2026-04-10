@@ -628,7 +628,7 @@ export default function DatasetsPage() {
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
-                  <Box sx={{ fontSize: "1.3rem" }}>🔥</Box>
+                  <TrendingUp size={24} color="#111827" strokeWidth={2.5} />
                   <Typography
                     sx={{
                       fontSize: "1.1rem",
